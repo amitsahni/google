@@ -64,5 +64,5 @@ repositories {
 ```
 
 ```groovy
-implementation 'com.amitsahni:google:0.0.1-alpha01'
+implementation 'com.amitsahni:google:0.0.1-alpha03'
 ```
