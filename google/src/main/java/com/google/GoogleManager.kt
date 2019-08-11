@@ -4,11 +4,12 @@ import android.content.Intent
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserInfo
 
-object GoogleConnect {
+object GoogleManager {
     internal var account: GoogleSignInAccount? = null
         private set
 
@@ -16,9 +17,7 @@ object GoogleConnect {
     internal val auth = FirebaseAuth.getInstance()
 
     @JvmStatic
-    fun with(): Builder {
-        return Builder()
-    }
+    internal var gso: GoogleSignInOptions? = null
 
     @JvmStatic
     fun onActivityResult(data: Intent, success: Boolean.() -> Unit) {

@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.google.GoogleConfiguration
-import com.google.GoogleConnect
+import com.google.GoogleManager
+import com.google.config
+import com.google.login
+import com.google.profile
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -14,14 +16,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        GoogleConfiguration.clientId("872446504976-l8pa7tp4nrc0v07tqa68bu7r6pqsvrtp.apps.googleusercontent.com")
-            .build()
+        config("872446504976-l8pa7tp4nrc0v07tqa68bu7r6pqsvrtp.apps.googleusercontent.com")
         google.setOnClickListener {
-            val user = GoogleConnect.user
+            val user = GoogleManager.user
             if (user == null) {
-                GoogleConnect.with()
-                    .login(this@MainActivity, 1000)
-                    .build()
+                login(1000)
             } else {
                 Log.i(
                     localClassName + "Google",
@@ -35,18 +34,20 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1000) {
-                GoogleConnect.onActivityResult(data!!) {
+                GoogleManager.onActivityResult(data!!) {
                     if (this)
-                        GoogleConnect.with()
-                            .profile()
-                            .success {
-                                Log.i(
-                                    localClassName + "Google",
-                                    "$displayName $email $phoneNumber"
-                                )
-                            }
-                            .build()
-                    Unit
+                        profile({
+                            Log.i(
+                                localClassName + "Google",
+                                "${it.displayName} ${it.email} ${it.phoneNumber}"
+                            )
+                        }, {
+                            it.printStackTrace()
+                        }, {
+                            Log.i(
+                                localClassName ,"Cancelled"
+                            )
+                        })
                 }
             }
         }
