@@ -3,7 +3,7 @@ package org.google
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import com.google.GoogleManager
 import com.google.config
