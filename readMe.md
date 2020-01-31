@@ -32,18 +32,7 @@ googleProfile
 ```kotlin
 GoogleManager.onActivityResult(data!!) {
                     if (this)
-                        profile({
-                            Log.i(
-                                localClassName + "Google",
-                                "${it.displayName} ${it.email} ${it.phoneNumber}"
-                            )
-                        }, {
-                            it.printStackTrace()
-                        }, {
-                            Log.i(
-                                localClassName ,"Cancelled"
-                            )
-                        })
+                        googleProfile
                 }
 ```
 
