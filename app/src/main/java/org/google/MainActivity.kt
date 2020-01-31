@@ -3,12 +3,9 @@ package org.google
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import com.google.GoogleManager
-import com.google.config
-import com.google.login
-import com.google.profile
+import androidx.appcompat.app.AppCompatActivity
+import com.google.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -16,16 +13,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        config("872446504976-l8pa7tp4nrc0v07tqa68bu7r6pqsvrtp.apps.googleusercontent.com")
+        //config("872446504976-l8pa7tp4nrc0v07tqa68bu7r6pqsvrtp.apps.googleusercontent.com")
+        clientId = "872446504976-l8pa7tp4nrc0v07tqa68bu7r6pqsvrtp.apps.googleusercontent.com"
         google.setOnClickListener {
-            val user = GoogleManager.user
+            val user = googleUser
             if (user == null) {
                 login(1000)
             } else {
                 Log.i(
-                    localClassName + "Google",
-                    user.displayName + " " + user.email + "" + user.phoneNumber
+                        localClassName + "Google",
+                        user.displayName + " " + user.email + "" + user.phoneNumber
                 )
+                logOut()
             }
         }
     }
@@ -34,20 +33,12 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1000) {
-                GoogleManager.onActivityResult(data!!) {
-                    if (this)
-                        profile({
-                            Log.i(
-                                localClassName + "Google",
-                                "${it.displayName} ${it.email} ${it.phoneNumber}"
-                            )
-                        }, {
-                            it.printStackTrace()
-                        }, {
-                            Log.i(
-                                localClassName ,"Cancelled"
-                            )
-                        })
+                onActivityResult(data) {
+                    if (this) {
+                        Log.i("Token = ", googleToken ?: "")
+                        Log.i("Token Profile = ", googleProfile?.idToken ?: "")
+                        Log.d("Profile = ", googleProfile?.toString())
+                    }
                 }
             }
         }
