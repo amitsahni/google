@@ -13,18 +13,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //config("872446504976-l8pa7tp4nrc0v07tqa68bu7r6pqsvrtp.apps.googleusercontent.com")
         clientId = "872446504976-l8pa7tp4nrc0v07tqa68bu7r6pqsvrtp.apps.googleusercontent.com"
         google.setOnClickListener {
-            val user = googleUser
+            val user = lastUserSignIn
             if (user == null) {
-                login(1000)
+                googleLogin(1000)
             } else {
                 Log.i(
                         localClassName + "Google",
-                        user.displayName + " " + user.email + "" + user.phoneNumber
+                        user.displayName + " " + user.email
                 )
-                logOut()
+                googleLogOut()
+//                googleRevokeAccess()
             }
         }
     }

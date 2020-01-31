@@ -1,6 +1,7 @@
 package com.google
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -28,7 +29,7 @@ var clientId: String = ""
                 .build()
     }
 
-fun Activity.login(requestCode: Int) {
+fun Activity.googleLogin(requestCode: Int) {
     val client = GoogleSignIn.getClient(this, gso!!)
     val signInIntent = client.signInIntent
     startActivityForResult(signInIntent, requestCode)
@@ -45,6 +46,11 @@ fun onActivityResult(data: Intent?, success: Boolean.() -> Unit) {
         success(false)
     }
 }
+
+val Context.lastUserSignIn: GoogleSignInAccount?
+    get() {
+        return GoogleSignIn.getLastSignedInAccount(this)
+    }
 
 val googleProfile: GoogleSignInAccount?
     get() {
@@ -74,8 +80,14 @@ fun profile(f: (Triple<UserInfo?, Exception?, Unit?>) -> Unit) {
             }
 }
 
-fun logOut() {
-    googleAuth.signOut()
+fun Activity.googleLogOut() {
+    val client = GoogleSignIn.getClient(this, gso!!)
+    client.signOut()
+}
+
+fun Activity.googleRevokeAccess() {
+    val client = GoogleSignIn.getClient(this, gso!!)
+    client.revokeAccess()
 }
 
 

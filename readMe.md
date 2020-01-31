@@ -6,13 +6,13 @@ Go to -> [Firebase Console](https://console.firebase.google.com/)
 Enable `Google` from `Authentication` `SignIn` and copy webclientId
 
 ```kotlin
-config("clientId")
+clientId = "put client id here"
 ```
 
 To check for current user
 
 ```kotlin
-GoogleManager.user
+googleProfile
 ```
 
 `Login Sample`
@@ -24,18 +24,7 @@ login(1000)
 `Profile Sample`
 
 ```kotlin
-profile({
-                            Log.i(
-                                localClassName + "Google",
-                                "${it.displayName} ${it.email} ${it.phoneNumber}"
-                            )
-                        }, {
-                            it.printStackTrace()
-                        }, {
-                            Log.i(
-                                localClassName ,"Cancelled"
-                            )
-                        })
+googleProfile
 ```
 
 `OnAcitivyResult`
