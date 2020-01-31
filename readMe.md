@@ -18,7 +18,7 @@ googleProfile
 `Login Sample`
 
 ```kotlin
-login(1000)
+googleLogin(1000)
 ```
 
 `Profile Sample`
@@ -33,6 +33,9 @@ googleProfile
 GoogleManager.onActivityResult(data!!) {
                     if (this)
                         googleProfile
+                        googleToken {
+                            Log.i("Token = ", it.toString())
+                        }
                 }
 ```
 
@@ -51,5 +54,5 @@ repositories {
 ```
 
 ```groovy
-implementation 'com.amitsahni:google:0.0.1-alpha04'
+implementation 'com.amitsahni:google:0.0.1-alpha06'
 ```

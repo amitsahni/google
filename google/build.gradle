@@ -15,7 +15,7 @@ ext {
 
     publishedGroupId = 'com.amitsahni'
     artifact = 'google'
-    libraryVersion = '0.0.1-alpha05'
+    libraryVersion = '0.0.1-alpha06'
 
     developerId = 'amitsahni'
     developerName = 'Amit Singh'

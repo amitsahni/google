@@ -35,7 +35,9 @@ class MainActivity : AppCompatActivity() {
             if (requestCode == 1000) {
                 onActivityResult(data) {
                     if (this) {
-                        Log.i("Token = ", googleToken ?: "")
+                        googleToken {
+                            Log.i("Token = ", it.toString())
+                        }
                         Log.i("Token Profile = ", googleProfile?.idToken ?: "")
                         Log.d("Profile = ", googleProfile?.toString())
                     }

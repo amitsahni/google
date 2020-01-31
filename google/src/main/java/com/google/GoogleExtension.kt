@@ -57,7 +57,7 @@ val googleProfile: GoogleSignInAccount?
         return account
     }
 
-fun profile(f: (Triple<UserInfo?, Exception?, Unit?>) -> Unit) {
+fun profile(f: (UserInfo?, Exception?, Unit?) -> Unit) {
     val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
     googleAuth.signInWithCredential(credential)
             .addOnCompleteListener {
@@ -66,17 +66,17 @@ fun profile(f: (Triple<UserInfo?, Exception?, Unit?>) -> Unit) {
                         it.providerData.forEach { user ->
                             if (user.providerId.equals("google.com")) {
                                 Log.d("Json = ", Gson().toJson(user))
-                                f(Triple(user, null, null))
+                                f(user, null, null)
                             }
                         }
                     }
                 } else {
-                    f(Triple(null, it.exception, null))
+                    f(null, it.exception, null)
                 }
             }.addOnCanceledListener {
-                f(Triple(null, null, Unit))
+                f(null, null, Unit)
             }.addOnFailureListener {
-                f(Triple(null, null, Unit))
+                f(null, null, Unit)
             }
 }
 
@@ -90,11 +90,25 @@ fun Activity.googleRevokeAccess() {
     client.revokeAccess()
 }
 
-
-val googleToken: String?
-    get() {
-        return account?.idToken
-    }
+fun googleToken(f: (String?) -> Unit) {
+    val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+    googleAuth.signInWithCredential(credential)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    googleAuth.currentUser?.getIdToken(true)
+                            ?.addOnSuccessListener {
+                                f(it.token)
+                            }
+                } else {
+                    f(null)
+                }
+            }.addOnCanceledListener {
+                f(null)
+            }.addOnFailureListener {
+                it.printStackTrace()
+                f(null)
+            }
+}
 
 val googleUser: UserInfo?
     get() {
