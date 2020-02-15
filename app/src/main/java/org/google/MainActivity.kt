@@ -3,10 +3,9 @@ package org.google
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.google.GoogleConfiguration
-import com.google.GoogleConnect
+import androidx.appcompat.app.AppCompatActivity
+import com.google.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -14,19 +13,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        GoogleConfiguration.clientId("872446504976-l8pa7tp4nrc0v07tqa68bu7r6pqsvrtp.apps.googleusercontent.com")
-            .build()
+        clientId = "872446504976-l8pa7tp4nrc0v07tqa68bu7r6pqsvrtp.apps.googleusercontent.com"
         google.setOnClickListener {
-            val user = GoogleConnect.user
+            val user = lastUserSignIn
             if (user == null) {
-                GoogleConnect.with()
-                    .login(this@MainActivity, 1000)
-                    .build()
+                googleLogin(1000)
             } else {
                 Log.i(
-                    localClassName + "Google",
-                    user.displayName + " " + user.email + "" + user.phoneNumber
+                        localClassName + "Google",
+                        user.displayName + " " + user.email
                 )
+                googleLogOut()
+//                googleRevokeAccess()
             }
         }
     }
@@ -35,18 +33,14 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1000) {
-                GoogleConnect.onActivityResult(data!!) {
-                    if (this)
-                        GoogleConnect.with()
-                            .profile()
-                            .success {
-                                Log.i(
-                                    localClassName + "Google",
-                                    "$displayName $email $phoneNumber"
-                                )
-                            }
-                            .build()
-                    Unit
+                onActivityResult(data) {
+                    if (this) {
+                        googleToken {
+                            Log.i("Token = ", it.toString())
+                        }
+                        Log.i("Token Profile = ", googleProfile?.idToken ?: "")
+                        Log.d("Profile = ", googleProfile?.toString())
+                    }
                 }
             }
         }

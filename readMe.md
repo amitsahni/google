@@ -6,47 +6,37 @@ Go to -> [Firebase Console](https://console.firebase.google.com/)
 Enable `Google` from `Authentication` `SignIn` and copy webclientId
 
 ```kotlin
-GoogleConfiguration.clientId(webclientId)
-                .build();
+clientId = "put client id here"
 ```
 
 To check for current user
 
 ```kotlin
-GoogleConfiguration.getAuth().getCurrentUser();
+googleProfile
 ```
 
 `Login Sample`
 
 ```kotlin
-FirebaseUser user = GoogleConfiguration.getAuth().getCurrentUser();
-            if (user == null) {
-                GoogleConnect.INSTANCE.with()
-                        .login(activity, requestCode)
-                        .build();
-            } else {
-                Log.i(getLocalClassName(), user.getDisplayName() + " " + user.getEmail() + "" + user.getPhoneNumber());
-            }
+googleLogin(1000)
 ```
 
 `Profile Sample`
 
 ```kotlin
-GoogleConnect.with()
-             .profile()
-             .build()
+googleProfile
 ```
 
 `OnAcitivyResult`
 
 ```kotlin
-GoogleConfiguration.onActivityResult(data, aBoolean -> {
-                    if (aBoolean)
-                        GoogleConnect.INSTANCE.with()
-                                .profile()
-                                .build();
-                    return Unit.INSTANCE;
-                });
+GoogleManager.onActivityResult(data!!) {
+                    if (this)
+                        googleProfile
+                        googleToken {
+                            Log.i("Token = ", it.toString())
+                        }
+                }
 ```
 
 Download
@@ -64,5 +54,5 @@ repositories {
 ```
 
 ```groovy
-implementation 'com.amitsahni:google:0.0.1-alpha03'
+implementation 'com.amitsahni:google:0.0.1-alpha06'
 ```
